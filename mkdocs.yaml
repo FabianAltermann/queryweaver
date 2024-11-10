@@ -33,6 +33,13 @@ nav:
 extra:
   version:
     provider: mike
+  social:
+    - icon: simple/github
+      link: https://github.com/FabianAltermann
+    - icon: simple/linkedin
+      link: https://www.linkedin.com/in/fabian-j-altermann/
+
+copyright: Copyright &copy; 2024 Fabian J. Altermann
 
 markdown_extensions:
   - pymdownx.superfences
