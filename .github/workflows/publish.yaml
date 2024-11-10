@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.10", "3.11", "3.12"]
+        python-version: ["3.12"]
     steps:
       - uses: actions/checkout@v4
 
@@ -34,7 +34,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: [test]
-    environment: testpypi
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/queryweaver
     permissions:
       id-token: write
     steps:
