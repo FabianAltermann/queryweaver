@@ -25,6 +25,12 @@ tests:
 build:
 	uv build
 
+.PHONY: clean
+clean:
+	rm -rf dist
+	rm -rf reports
+
+
 .PHONY: docs
 docs:
 	uv run mkdocs gh-deploy
