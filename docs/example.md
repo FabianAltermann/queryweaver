@@ -1,58 +1,46 @@
 # Example
 
-```py
-from queryweaver import SQLQueryBuilder
+=== "Raw SQL Query"
 
-with SQLQueryBuilder("examples/chinook.db") as db:
-    albums = db.schema.albums
-    artists = db.schema.artists
+    ```sql
+    SELECT
+            artists.ArtistId AS 'ID',
+            artists.Name AS 'Bandname',
+            COUNT(albums.AlbumId) AS '# Albums'
+    FROM artists
+    INNER JOIN albums
+            ON (artists.ArtistId = albums.ArtistId)
+    GROUP BY artists.ArtistId
+    HAVING (COUNT(albums.AlbumId) >= 10)
+    ORDER BY COUNT(albums.AlbumId) DESC
+    LIMIT 5
+    ```
 
-    query = (
-        db.select(
-            artists.ArtistId.alias("ID"),
-            artists.Name.alias("Bandname"),
-            albums.AlbumId.count().alias("# Albums"),
+=== "QueryWeaver"
+
+    ```py
+    from queryweaver import SQLQueryBuilder
+
+    with SQLQueryBuilder("examples/chinook.db") as db:
+        albums = db.schema.albums
+        artists = db.schema.artists
+
+        query = (
+            db.select(
+                artists.ArtistId.alias("ID"),
+                artists.Name.alias("Bandname"),
+                albums.AlbumId.count().alias("# Albums"),
+            )
+            .from_table(artists)
+            .join(albums, on=artists.ArtistId == albums.ArtistId)
+            .group_by(artists.ArtistId)
+            .having(albums.AlbumId.count() >= 10)
+            .order_by(albums.AlbumId.count(), ascending=False)
+            .limit(5)
         )
-        .from_table(artists)
-        .join(albums, on=artists.ArtistId == albums.ArtistId)
-        .group_by(artists.ArtistId)
-        .having(albums.AlbumId.count() >= 10)
-        .order_by(albums.AlbumId.count(), ascending=False)
-        .limit(5)
-    )
 
-    print(query)
-    print(query.to_pandas())
-```
-
-## Raw SQL Query
-
-```sql
-SELECT
-        artists.ArtistId AS 'ID',
-        artists.Name AS 'Bandname',
-        COUNT(albums.AlbumId) AS '# Albums'
- FROM artists
- INNER JOIN albums
-         ON (artists.ArtistId = albums.ArtistId)
- GROUP BY artists.ArtistId
- HAVING (COUNT(albums.AlbumId) >= 10)
- ORDER BY COUNT(albums.AlbumId) DESC
- LIMIT 5
-
-DEBUG:queryweaver.query_builder:Executing query:
-SELECT
-        artists.ArtistId AS 'ID',
-        artists.Name AS 'Bandname',
-        COUNT(albums.AlbumId) AS '# Albums'
- FROM artists
- INNER JOIN albums
-         ON (artists.ArtistId = albums.ArtistId)
- GROUP BY artists.ArtistId
- HAVING (COUNT(albums.AlbumId) >= 10)
- ORDER BY COUNT(albums.AlbumId) DESC
- LIMIT 5
-```
+        print(query.to_pandas())
+    ```
 
 ## Output
 

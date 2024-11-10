@@ -33,3 +33,14 @@ nav:
 extra:
   version:
     provider: mike
+
+markdown_extensions:
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __spans
+      pygments_lang_class: true
+  - pymdownx.snippets
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
