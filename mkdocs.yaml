@@ -1,12 +1,23 @@
 site_name: QueryWeaver Documentation
 site_url: https://FabianAltermann.github.io/queryweaver/
+repo_url: https://github.com/FabianAltermann/queryweaver
 
 theme:
   name: "material"
+  logo: assets/QueryWeaverLogo.png
   palette:
     primary: "teal"
+  icon:
+    repo: fontawesome/brands/git-alt
+  font:
+    text: "Roboto"
+    code: "Roboto Mono"
 
 nav:
   - Getting Started: index.md
   - Install: install.md
   - Full Example: example.md
+
+extra:
+  version:
+    provider: mike

@@ -6,10 +6,10 @@ It is (for now) a simple show-case and practice project for practising
 
 - GitHub
 - GitHub Actions
+- Documentation with MkDocs on GitHub Pages
 - CI/CD
 - pre-commit hooks
 - DevOps / package distribution
-- Documentation with MkDocs (not yet implemented...)
 
 Full code on [GiHhub](https://github.com/fabianaltermann/queryweaver).
 
