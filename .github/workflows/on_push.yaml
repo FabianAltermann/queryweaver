@@ -3,7 +3,7 @@ name: Example
 on: push
 
 jobs:
-  python:
+  BasicChecks:
     runs-on: ubuntu-latest
 
     steps:
