@@ -206,6 +206,17 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="." class="md-nav__link md-nav__link--active">
         
   
@@ -215,6 +226,34 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dependencies
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -280,6 +319,23 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dependencies
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -305,102 +361,11 @@
 <li>Documentation with MkDocs (not yet implemented...)</li>
 </ul>
 <p>Full code on <a href="https://github.com/fabianaltermann/queryweaver">GiHhub</a>.</p>
-<h1 id="getting-started">Getting Started</h1>
-<h2 id="install">Install</h2>
-<pre><code>make install
-</code></pre>
 <h2 id="dependencies">Dependencies</h2>
 <ul>
 <li><a href="https://pypi.org/project/pyyaml/">pyyaml</a></li>
 <li><a href="https://pypi.org/project/pandas/">pandas</a></li>
 </ul>
-<h2 id="example">Example</h2>
-<pre><code class="language-py">from queryweaver import SQLQueryBuilder
-
-with SQLQueryBuilder(&quot;examples/chinook.db&quot;) as db:
-    albums = db.schema.albums
-    artists = db.schema.artists
-
-    query = (
-        db.select(
-            artists.ArtistId.alias(&quot;ID&quot;),
-            artists.Name.alias(&quot;Bandname&quot;),
-            albums.AlbumId.count().alias(&quot;# Albums&quot;),
-        )
-        .from_table(artists)
-        .join(albums, on=artists.ArtistId == albums.ArtistId)
-        .group_by(artists.ArtistId)
-        .having(albums.AlbumId.count() &gt;= 10)
-        .order_by(albums.AlbumId.count(), ascending=False)
-        .limit(5)
-    )
-
-    print(query)
-    print(query.to_pandas())
-</code></pre>
-<h2 id="raw-sql-query">Raw SQL Query</h2>
-<pre><code class="language-sql">SELECT
-        artists.ArtistId AS 'ID',
-        artists.Name AS 'Bandname',
-        COUNT(albums.AlbumId) AS '# Albums'
- FROM artists
- INNER JOIN albums
-         ON (artists.ArtistId = albums.ArtistId)
- GROUP BY artists.ArtistId
- HAVING (COUNT(albums.AlbumId) &gt;= 10)
- ORDER BY COUNT(albums.AlbumId) DESC
- LIMIT 5
-
-DEBUG:queryweaver.query_builder:Executing query:
-SELECT
-        artists.ArtistId AS 'ID',
-        artists.Name AS 'Bandname',
-        COUNT(albums.AlbumId) AS '# Albums'
- FROM artists
- INNER JOIN albums
-         ON (artists.ArtistId = albums.ArtistId)
- GROUP BY artists.ArtistId
- HAVING (COUNT(albums.AlbumId) &gt;= 10)
- ORDER BY COUNT(albums.AlbumId) DESC
- LIMIT 5
-</code></pre>
-<h2 id="output">Output</h2>
-<table>
-<thead>
-<tr>
-<th>ID</th>
-<th>Bandname</th>
-<th># Albums</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>90</td>
-<td>Iron Maiden</td>
-<td>21</td>
-</tr>
-<tr>
-<td>22</td>
-<td>Led Zeppelin</td>
-<td>14</td>
-</tr>
-<tr>
-<td>58</td>
-<td>Deep Purple</td>
-<td>11</td>
-</tr>
-<tr>
-<td>50</td>
-<td>Metallica</td>
-<td>10</td>
-</tr>
-<tr>
-<td>150</td>
-<td>U2</td>
-<td>10</td>
-</tr>
-</tbody>
-</table>
 
 
 
