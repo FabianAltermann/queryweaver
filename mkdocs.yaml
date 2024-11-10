@@ -1,4 +1,5 @@
 site_name: QueryWeaver Documentation
+site_url: https://FabianAltermann.github.io/queryweaver/
 
 theme:
   name: "material"
