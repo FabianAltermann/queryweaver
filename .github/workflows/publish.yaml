@@ -36,7 +36,6 @@ jobs:
     needs: [test]
     environment:
       name: testpypi
-      url: https://test.pypi.org/queryweaver
     permissions:
       id-token: write
     steps:
