@@ -1,7 +1,7 @@
-all: install check tests 
+all: install check tests
 
 .PHONY: install
-install: 
+install:
 	uv sync
 
 .PHONY: check
@@ -12,11 +12,11 @@ lint:
 	uv run ruff check --fix
 
 .PHONY: format
-format: 
+format:
 	uv run ruff format
 
 .PHONY: tests
-tests: 
+tests:
 	uv run coverage run
 	uv run coverage report
 	uv run coverage html
@@ -24,3 +24,7 @@ tests:
 .PHONY: build
 build:
 	uv build
+
+.PHONY: docs
+docs:
+	uv run mkdocs gh-deploy
