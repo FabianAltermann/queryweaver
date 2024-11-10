@@ -1,4 +1,4 @@
-name: Example
+name: PushChecks
 
 on: push
 
@@ -30,3 +30,9 @@ jobs:
       - name: "Run tests"
         run: |
           make tests
+
+      - name: "Upload test reports"
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: reports # or path/to/artifact
