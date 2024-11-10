@@ -6,7 +6,19 @@ theme:
   name: "material"
   logo: assets/QueryWeaverLogo.png
   palette:
-    primary: "teal"
+    - scheme: "slate"
+      toggle:
+        icon: material/weather-sunny
+        name: Dark Mode
+      primary: teal
+      accent: deep purple
+    - scheme: "light"
+      toggle:
+        icon: material/weather-night
+        name: Light Mode
+      primary: pink
+      accent: cyan
+
   icon:
     repo: fontawesome/brands/git-alt
   font:
