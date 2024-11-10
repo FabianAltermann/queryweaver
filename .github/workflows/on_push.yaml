@@ -21,7 +21,7 @@ jobs:
 
       - name: "Install dependencies"
         run: |
-          make install --dev
+          make install
 
       - name: "Linting and formatting"
         run: |
