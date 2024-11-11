@@ -1,0 +1,38 @@
+name: PushChecks
+
+on: push
+
+jobs:
+  BasicChecks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uvgit
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "0.5.1"
+
+      - name: "Set up Python"
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+
+      - name: "Install dependencies"
+        run: |
+          make install
+
+      - name: "Linting and formatting"
+        run: |
+          make check
+
+      - name: "Run tests"
+        run: |
+          make tests
+
+      # - name: "Upload test reports"
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: test-reports
+      #     path: reports # or path/to/artifact
