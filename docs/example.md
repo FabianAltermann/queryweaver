@@ -4,12 +4,12 @@
 
     ```sql
     SELECT
-            artists.ArtistId AS 'ID',
-            artists.Name AS 'Bandname',
-            COUNT(albums.AlbumId) AS '# Albums'
+        artists.ArtistId AS 'ID',
+        artists.Name AS 'Bandname',
+        COUNT(albums.AlbumId) AS '# Albums'
     FROM artists
     INNER JOIN albums
-            ON (artists.ArtistId = albums.ArtistId)
+        ON (artists.ArtistId = albums.ArtistId)
     GROUP BY artists.ArtistId
     HAVING (COUNT(albums.AlbumId) >= 10)
     ORDER BY COUNT(albums.AlbumId) DESC
