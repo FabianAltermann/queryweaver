@@ -24,6 +24,7 @@ dev = [
 minversion = 8.0
 addopts = "-vv -ra -q -s"
 testpaths = "tests"
+pythonpath = [".", "src"]
 filterwarnings = "ignore"
 
 [tool.coverage.run]
