@@ -49,7 +49,9 @@ class Column:
 
     def contains(self, other: tuple):
         if not isinstance(other, tuple):
-            raise NotImplementedError(f"Not Implemented with type {type(other)} - use tuple for IN")
+            raise NotImplementedError(
+                f"Not Implemented with type {type(other)} - use tuple for IN"
+            )
         return f"{self!s} IN {other!s}"
 
     def between(self, lower: Any, upper: Any):

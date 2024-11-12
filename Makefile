@@ -11,6 +11,10 @@ check: lint format
 lint:
 	uv run ruff check --fix
 
+.PHONY: typecheck
+typecheck:
+	uv run mypy .
+
 .PHONY: format
 format:
 	uv run ruff format

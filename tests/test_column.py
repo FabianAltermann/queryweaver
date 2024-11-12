@@ -31,5 +31,7 @@ def test_column_expressions(TestColumn, AnotherTestColumn):
 
 def test_column_arithmetic_alias(TestColumn, AnotherTestColumn):
     test_arithmetic = (TestColumn + AnotherTestColumn).alias("col1 + col2")
-    assert str(test_arithmetic) == "(table.column + table.anotherColumn) AS 'col1 + col2'"
+    assert (
+        str(test_arithmetic) == "(table.column + table.anotherColumn) AS 'col1 + col2'"
+    )
     assert test_arithmetic.header == "col1 + col2"

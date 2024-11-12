@@ -116,7 +116,9 @@ class SQLQueryBuilder:
     def join(
         self, table: Table, on: Column, *params: Any, join_type: str = "INNER"
     ) -> "SQLQueryBuilder":
-        self._add_to_query_string(f" {join_type.upper()} JOIN {table.table_name} \n\t ON {on}")
+        self._add_to_query_string(
+            f" {join_type.upper()} JOIN {table.table_name} \n\t ON {on}"
+        )
         self.values.extend(params)
         return self
 
