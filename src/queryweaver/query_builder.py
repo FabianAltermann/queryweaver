@@ -5,8 +5,6 @@ import sqlite3
 from pathlib import Path
 from typing import Any
 
-import pandas as pd  # type: ignore
-
 from .tables import Column, Schematic, Table
 
 logging.basicConfig(level=logging.DEBUG)
@@ -153,7 +151,3 @@ class SQLQueryBuilder:
         self.values = []
         self.selected_columns = []
         return column_names, result
-
-    def to_pandas(self, **kwargs):
-        header, data = self.execute()
-        return pd.DataFrame(data, columns=header, **kwargs)
