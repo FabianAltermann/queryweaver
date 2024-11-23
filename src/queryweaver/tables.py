@@ -1,4 +1,4 @@
-__all__ = ["Column", "Table", "Schematic"]
+__all__ = ["Column", "Schematic", "Table"]
 
 from dataclasses import dataclass, field
 from pathlib import Path
