@@ -42,14 +42,14 @@ docs:
 .PHONY: project-version
 .SILENT: project-version
 project-version:
-	uv run --no-project ./tools/version.py --version
+	cat pyproject.toml | grep -oP '^version = "\K[^"]+' | awk -F'-' '{print $$1}'
 
 .PHONY: project-info
 .SILENT: project-info
 project-info:
-	uv run --no-project ./tools/version.py --info
+	cat pyproject.toml | grep -oP '^description = "\K[^"]+' | awk -F'-' '{print $$1}'
 
 .PHONY: project-name
 .SILENT: project-name
 project-name:
-	uv run --no-project ./tools/version.py --name
+	cat pyproject.toml | grep -oP '^name = "\K[^"]+' | awk -F'-' '{print $$1}'

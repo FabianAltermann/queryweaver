@@ -1,7 +1,7 @@
 [project]
 name = "queryweaver"
-version = "0.1.4"
-description = "Add your description here"
+version = "0.1.5-rc"
+description = "A sample project to demonstrate CI/CD with GitHub Actions providing a simple SQL Query Builder"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = ["pyyaml>=6.0.2"]
@@ -45,7 +45,7 @@ exclude = [
     "dist",
     "node_modules",
     "site-packages",
-    'uv.lock',
+    "uv.lock",
 ]
 
 [tool.ruff.lint]
