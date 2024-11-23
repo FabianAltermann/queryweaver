@@ -4,10 +4,7 @@ version = "0.1.5-rc"
 description = "A sample project to demonstrate CI/CD with GitHub Actions providing a simple SQL Query Builder"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = [
-    "pyyaml>=6.0.2",
-    "types-toml>=0.10.8.20240310",
-]
+dependencies = ["pyyaml>=6.0.2", "types-toml>=0.10.8.20240310"]
 
 [dependency-groups]
 dev = [

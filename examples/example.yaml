@@ -1,0 +1,14 @@
+users:
+  - id
+  - name
+  - age
+
+products:
+  - product_id
+  - name
+  - price
+
+orders:
+  - order_id
+  - user_id
+  - amount
