@@ -100,7 +100,7 @@ erDiagram
 
 ## Basic Comparison between Raw SQL and `QueryWeaver`'s Query
 
-The following comparison shows a raw SQL query and a corresponding python query made with `QueryWeaver`
+The following comparison shows a raw SQL query and a corresponding python query made with `QueryWeaver`:
 
 === "Raw SQL Query"
 

@@ -1,0 +1,125 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "[0-9]+.[0-9]+.[0-9]+"
+jobs:
+  details:
+    runs-on: ubuntu-latest
+    outputs:
+      package_name: ${{ steps.package_information.outputs.package_name }}
+      new_version: ${{ steps.release.outputs.new_version }}
+      suffix: ${{ steps.release.outputs.suffix }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+
+      - name: Extract tag and Details
+        id: release
+        run: |
+          if [ "${{ github.ref_type }}" = "tag" ]; then
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          fi
+
+          NEW_VERSION=$(make project-version | awk -F'-' '{print $1}')
+          SUFFIX=$(make project-version | awk -F'-' '{print $2}')
+          echo "new_version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
+          echo "suffix=$SUFFIX" >> "$GITHUB_OUTPUT"
+          echo "tag_name=$TAG_NAME" >> "$GITHUB_OUTPUT"
+          echo "Supplied version in pyroject.toml is $NEW_VERSION"
+          echo "with the suffix: $SUFFIX"
+          echo "The provided tag name is $TAG_NAME"
+
+          if [[ $TAG_NAME != $NEW_VERSION ]]; then
+              echo "Tag name and version in pyproject.toml do not match."
+              exit 1
+          fi
+
+      - name: Get Package Name and Description
+        id: package_information
+        run: |
+          package_information=$(make project-info)
+          PACKAGE_NAME=$(echo $(make project-name) | awk '{print $1}')
+          echo "Package name: $PACKAGE_NAME"
+          echo "Package information: $package_information"
+          echo "package_name=$PACKAGE_NAME" >> "$GITHUB_OUTPUT"
+
+  check_pypi:
+    needs: details
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch information from PyPI
+        run: |
+          PACKAGE_NAME=${{ needs.details.outputs.package_name}}
+          response=$(curl -s https://test.pypi.org/pypi/$PACKAGE_NAME/json || echo "{}")
+          latest_previous_version=$(echo -e $response | grep -oP '"version":\s*"\K[^"]+')
+          if [ -z "$latest_previous_version" ]; then
+            echo "Package not found on PyPI."
+            latest_previous_version="0.0.0"
+          fi
+          echo "Latest version on PyPI: $latest_previous_version"
+          echo "latest_previous_version=$latest_previous_version" >> $GITHUB_ENV
+
+      - name: Compare versions and exit if not newer
+        run: |
+          NEW_VERSION=${{ needs.details.outputs.new_version }}
+          LATEST_VERSION=$latest_previous_version
+          if [ "$(printf '%s\n' "$LATEST_VERSION" "$NEW_VERSION" | sort -rV | head -n 1)" != "$NEW_VERSION" ] || [ "$NEW_VERSION" == "$LATEST_VERSION" ]; then
+            echo "The new version $NEW_VERSION is not greater than the latest version $LATEST_VERSION on PyPI."
+            exit 1
+          else
+            echo "The new version $NEW_VERSION is greater than the latest version $LATEST_VERSION on PyPI."
+          fi
+
+  setup-and-bulid:
+    needs: [check_pypi, details]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: "pyproject.toml"
+
+      - name: Install dependencies
+        run: |
+          make install
+
+      - name: Build package
+        run: |
+          make build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  pypi_publish:
+    name: Upload release to PyPI
+    needs: [setup-and-bulid]
+    runs-on: ubuntu-latest
+    environment:
+      name: publish-test-pypi
+    permissions:
+      id-token: write
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Publish distribution to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/

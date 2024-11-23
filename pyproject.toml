@@ -1,12 +1,10 @@
 [project]
 name = "queryweaver"
-version = "0.1.0"
+version = "0.1.4"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = [
-    "pyyaml>=6.0.2",
-]
+dependencies = ["pyyaml>=6.0.2"]
 
 [dependency-groups]
 dev = [
@@ -19,32 +17,11 @@ dev = [
     "ruff>=0.7.3",
 ]
 
-[tool.pytest.ini_options]
-minversion = 8.0
-addopts = "-vv -ra -q -s"
-testpaths = "tests"
-pythonpath = [".", "src"]
-filterwarnings = "ignore"
-
-[tool.coverage.run]
-branch = true
-data_file = "./reports/.coverage"
-command_line = "-m pytest"
-
-[tool.coverage.report]
-show_missing = true
-skip_covered = true
-skip_empty = true
-fail_under = 50
-
-[tool.coverage.html]
-directory = "./reports/coverage_html"
-
 [tool.mypy]
 ignore_missing_imports = true
 warn_return_any = true
 warn_unused_configs = true
-exclude = ["__init__.py", "./src/xrfanalyzer/gui/components"] # exclude the __init__.py file from type checking
+exclude = ["__init__.py", "./src/xrfanalyzer/gui/components"]
 
 [tool.ruff]
 target-version = "py311"
@@ -68,52 +45,45 @@ exclude = [
     "dist",
     "node_modules",
     "site-packages",
+    'uv.lock',
 ]
 
 [tool.ruff.lint]
-select = [
-    "E", # pycodestyle
-    "F", # pyflakes
-    "I", # isort
-    "RUF", # Ruff specific rules
-    "UP", # pyupgrade when better syntax is available in current python version
-    ]
+select = ["E", "F", "I", "RUF", "UP"]
 ignore = ["E501"]
-
-# Allow fix for all enabled rules (when `--fix`) is provided.
 fixable = ["ALL"]
 unfixable = []
-
-# Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+docstring-code-format = false
+docstring-code-line-length = "dynamic"
+
+[tool.pytest.ini_options]
+minversion = 8.0
+addopts = "-vv -ra -q -s"
+testpaths = "tests"
+pythonpath = [".", "src"]
+filterwarnings = "ignore"
+
+[tool.coverage.run]
+branch = true
+data_file = "./reports/.coverage"
+command_line = "-m pytest"
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+skip_empty = true
+fail_under = 50
+
+[tool.coverage.html]
+directory = "./reports/coverage_html"
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["E402", "F401", "F403"]
 "**/{tests,docs,tools}/*" = ["E402"]
-
-[tool.ruff.format]
-# Like Black, use double quotes for strings.
-quote-style = "double"
-
-# Like Black, indent with spaces, rather than tabs.
-indent-style = "space"
-
-# Like Black, respect magic trailing commas.
-skip-magic-trailing-comma = false
-
-# Like Black, automatically detect the appropriate line ending.
-line-ending = "auto"
-
-# Enable auto-formatting of code examples in docstrings. Markdown,
-# reStructuredText code/literal blocks and doctests are all supported.
-#
-# This is currently disabled by default, but it is planned for this
-# to be opt-out in the future.
-docstring-code-format = false
-
-# Set the line length limit used when formatting code snippets in
-# docstrings.
-#
-# This only has an effect when the `docstring-code-format` setting is
-# enabled.
-docstring-code-line-length = "dynamic"
