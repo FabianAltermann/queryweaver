@@ -38,3 +38,18 @@ clean:
 .PHONY: docs
 docs:
 	uv run mkdocs gh-deploy
+
+.PHONY: project-version
+.SILENT: project-version
+project-version:
+	uv run --no-project ./tools/version.py --version
+
+.PHONY: project-info
+.SILENT: project-info
+project-info:
+	uv run --no-project ./tools/version.py --info
+
+.PHONY: project-name
+.SILENT: project-name
+project-name:
+	uv run --no-project ./tools/version.py --name
