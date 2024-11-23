@@ -103,3 +103,21 @@ jobs:
         with:
           name: dist
           path: dist/*
+
+  pypi_publish:
+    name: Upload release to PyPI
+    needs: [setup-and-bulid]
+    runs-on: ubuntu-latest
+    environment:
+      name: publish-test-pypi
+    permissions:
+      id-token: write
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: dist
+          path: dist/
+
+      - name: Publish distribution to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
